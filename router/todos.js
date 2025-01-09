@@ -20,7 +20,7 @@ router.get('/get-all-todos', (req, res)=>{
     res.json(todos)
 })
 
-router.get('/get-todo-by-id/:id', (req, res)=>{
+router.get('/get-todo-by-id/:id', (req, res)=>{ //WRONG! Brings back all
     let id = req.params.id
         let {newName} = req.body
         const foundID = todos.find(function(element){
@@ -34,7 +34,7 @@ router.get('/get-todo-by-id/:id', (req, res)=>{
     }
     })
 
-    router.get('get-todos-by-done/:done', (req, res)=>{
+    router.get('get-todos-by-done/:done', (req, res)=>{ //WRONG! Doesnt work
         let {done} = req.params
         const filteredTodos = todos.filter(function(todo){
             return todo.done === done
@@ -42,23 +42,28 @@ router.get('/get-todo-by-id/:id', (req, res)=>{
         res.json({filteredTodos})
     })
 
-    router.post('/create-new-todo', (req, res)=>{
+    router.post('/create-new-todo', (req, res)=>{ //WRONG!
         const newTodo = {
             id: uuidv4(),
             todo: req.body.todoItem,
             done: "false"
         }
-        todos.push(newTodo)
-        res.json(`New todo created: ${id}, ${done}`)
-        const existingTodo = todos.find(t => t.todos === newTodo.todo)
-            if(existingTodo){
-                res.json({message:"Todo already exists"})
+        const existingTodo = todos.find(t => t.todos === newTodo.req.body)
+        if(existingTodo){
+            res.json({message:"Todo already exists"})
         }
         todos.push(newTodo)
+        res.json(`New todo created: ${id}, ${done}`)
     })
 
-    router.put('/update-todo', (req, res)=>{
-        const todoId = req.params.id
+    router.put('/update-todo', (req, res)=>{ //WRONG!
+        const todoId = req.params //Gets the id and saves it as "todoID"
+        const updateData = req.body //Gets new info thats sent in
+        const todo = todos.find(t => t.id === todoId) //looks for same id
+        if(updateData){
+
+        }
+    
         res.json(todos)
     })
 
