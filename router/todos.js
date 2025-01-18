@@ -57,14 +57,25 @@ router.get('/get-todo-by-id/:id', (req, res)=>{ //WRONG! Brings back all
     })
 
     router.put('/update-todo', (req, res)=>{ //WRONG!
-        const todoId = req.params //Gets the id and saves it as "todoID"
         const updateData = req.body //Gets new info thats sent in
         const todo = todos.find(t => t.id === todoId) //looks for same id
-        if(updateData){
-
+        if(updateData === todo){ //LOST
+            res.json({message: "Update complete", payload: updateData})
         }
     
         res.json(todos)
     })
 
+    router.put('/mark-done', (req, res)=>{
+        const {todoId} = req.body
+        const todo = todos.find(t => t.id === todoId)
+        todo.done = true
+        res.json({message: "Todo marked done", todo: todo})
+    })
+
+    router.delete('/delete-todo', (req, res)=>{
+        const {todoId} = req.body
+        const todo = todos.remove(t => t.id === todoId)
+        res.json({message:"Todo Item has been deleted"})
+    })
 module.exports = router
